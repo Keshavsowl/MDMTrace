@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(MDMTrace)
+find_package(Threads REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -43,7 +44,7 @@ target_link_libraries(MdmTraceExample PRIVATE MdmTrace JsonCpp)
 
 add_executable(MdmFieldMapGenerator src/MdmFieldMapGenerator.cpp)
 target_include_directories(MdmFieldMapGenerator PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(MdmFieldMapGenerator PRIVATE MdmTrace MdmFieldMap JsonCpp)
+target_link_libraries(MdmFieldMapGenerator PRIVATE MdmTrace MdmFieldMap JsonCpp stdc++fs)
 
 add_executable(MdmFieldMapTraceExample MdmFieldMapTraceExample.cpp)
 target_include_directories(MdmFieldMapTraceExample PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -93,7 +94,7 @@ if(MdmTrace_ROOT_LIBRARIES)
     target_include_directories(GenerateIonOptics PRIVATE ${PROJECT_SOURCE_DIR}/include ${MdmTrace_ROOT_INCLUDE_DIRS})
     target_compile_options(GenerateIonOptics PRIVATE ${MdmTrace_ROOT_COMPILE_OPTIONS})
     target_compile_definitions(GenerateIonOptics PRIVATE MdmTrace_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
-    target_link_libraries(GenerateIonOptics PRIVATE MdmFieldMapTransport JsonCpp ${MdmTrace_ROOT_LIBRARIES})
+    target_link_libraries(GenerateIonOptics PRIVATE MdmFieldMapTransport JsonCpp ${MdmTrace_ROOT_LIBRARIES} Threads::Threads)
 else()
     message(WARNING "ROOT was not found. Compare and GenerateIonOptics will not be built; all non-ROOT MDMTrace tools remain available.")
 endif()
